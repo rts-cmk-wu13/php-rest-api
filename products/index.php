@@ -34,6 +34,19 @@ function validateID() {
 
 // HENT ALLE PRODUKTER
 if ($_SERVER["REQUEST_METHOD"] === "GET" && empty($_GET["id"])) {
+	$headers = apache_request_headers();
+
+	if (!isset($headers["Authorization"])) {
+		http_response_code(401);
+		exit;
+	}
+
+	if ($headers["Authorization"] !== "1234") {
+		http_response_code(403);
+		exit;
+	}
+
+
 	$limit = isset($_GET["limit"]) ? intval($_GET["limit"]) : 10;
 	$offset = isset($_GET["offset"]) ? intval($_GET["offset"]) : 0;
 
